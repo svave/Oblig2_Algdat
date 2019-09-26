@@ -1,4 +1,3 @@
-package no.oslomet.cs.algdat;
 
 
 ////////////////// class DobbeltLenketListe //////////////////////////////
