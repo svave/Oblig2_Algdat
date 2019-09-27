@@ -46,16 +46,36 @@ public class DobbeltLenketListe<T> implements Liste<T> {
     }
 
     public DobbeltLenketListe(T[] a) {
-        throw new NotImplementedException();
-    }
+        this.hode = hode;
+        hode.forrige = null;
+        this.hale = hale;
+        hale.neste = null;
+        this.antall = antall;
+        this.endringer = endringer;
 
+        //Sjekker om en verdi i a er null
+        if(a == null){
+            Objects.requireNonNull(a,"Ikke tillatt med null tabell");
+        }
+
+        //hvis a har en verdi som ikke er null
+        if(a.length == 1 && a != null){
+            hode.forrige = new Node(T[a], a, a);
+            hale.neste = new Node<>(T[a], a, a);
+        }
+
+    }
     public Liste<T> subliste(int fra, int til){
         throw new NotImplementedException();
     }
 
     @Override
     public int antall() {
-        return 0;
+        int antall = 0;
+        for(T liste : this){
+            antall++
+        }
+        return antall;
     }
 
     @Override
