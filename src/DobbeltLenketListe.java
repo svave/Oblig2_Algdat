@@ -54,14 +54,23 @@ public class DobbeltLenketListe<T> implements Liste<T> {
         this.endringer = endringer;
 
         //Sjekker om en verdi i a er null
-        if(a == null){
-            Objects.requireNonNull(a,"Ikke tillatt med null tabell");
-        }
+        for(T t : a) {
+            if (t == null) {
+                Objects.requireNonNull(a, "Ikke tillatt med null tabell");
+            }
 
-        //hvis a har en verdi som ikke er null
-        if(a.length == 1 && a != null){
-            hode.forrige = new Node(T[a], a, a);
-            hale.neste = new Node<>(T[a], a, a);
+            //hvis a har en verdi som ikke er null
+            if(a.length == 1 && a != null){
+                hode.forrige = new Node<>(a[0]);
+                hale.neste = new Node<>(a[0]);
+                antall++;
+            }
+            //hvis tabellen a er helt tom
+            if(a.length == 0){
+                this.hode = null;
+                this.hale = null;
+                endringer = 0;
+            }
         }
 
     }
@@ -71,11 +80,7 @@ public class DobbeltLenketListe<T> implements Liste<T> {
 
     @Override
     public int antall() {
-        int antall = 0;
-        for(T liste : this){
-            antall++
-        }
-        return antall;
+        return 0;
     }
 
     @Override
