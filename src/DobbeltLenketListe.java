@@ -15,7 +15,6 @@ import java.util.Objects;
 import java.util.function.Predicate;
 
 
-
 public class DobbeltLenketListe<T> implements Liste<T> {
 
     /**
@@ -44,7 +43,6 @@ public class DobbeltLenketListe<T> implements Liste<T> {
     private int endringer;         // antall endringer i listen
 
     public DobbeltLenketListe() {
-        throw new NotImplementedException();
     }
 
     public DobbeltLenketListe(T[] a) {
@@ -57,12 +55,17 @@ public class DobbeltLenketListe<T> implements Liste<T> {
 
     @Override
     public int antall() {
-        throw new NotImplementedException();
+        return 0;
     }
 
     @Override
     public boolean tom() {
-        throw new NotImplementedException();
+        if(antall()==0){
+            return true;
+        }
+        else{
+            return false;
+        }
     }
 
     @Override
