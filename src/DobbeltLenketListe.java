@@ -149,7 +149,8 @@ public class DobbeltLenketListe<T> implements Liste<T> {
 
     @Override
     public Iterator<T> iterator() {
-        throw new NotImplementedException();
+        //8 b)
+        return new DobbeltLenketListe<T>;
     }
 
     public Iterator<T> iterator(int indeks) {
@@ -162,27 +163,68 @@ public class DobbeltLenketListe<T> implements Liste<T> {
         private boolean fjernOK;
         private int iteratorendringer;
 
-        private DobbeltLenketListeIterator(){
-            throw new NotImplementedException();
+        private DobbeltLenketListeIterator(int indeks){
+            //8 c)
+
         }
 
-        private DobbeltLenketListeIterator(int indeks){
-            throw new NotImplementedException();
+        private DobbeltLenketListeIterator(){
+            denne = hode;     // p starter på den første i listen
+            fjernOK = false;  // blir sann når next() kalles
+            iteratorendringer = endringer;  // teller endringer
         }
 
         @Override
         public boolean hasNext(){
-            throw new NotImplementedException();
+            return denne != null;
         }
 
         @Override
         public T next(){
-            throw new NotImplementedException();
+            if(iteratorendringer != endringer){
+                throw new ConcurrentModificationException();
+            }
+            if(!hasNext()){
+                throw new NoSuchElementException("Ingen verdier i listen!");
+                fjernOK = true;
+                T thisValue = denne.verdi;
+                denne = denne.neste;
+
+                return thisValue;
+            }
         }
 
         @Override
         public void remove(){
-            throw new NotImplementedException();
+
+            //Hvis Nodens verdi er eneste som ligger i listen, så nulles hode og hale
+            if(antall == 1){
+                hode = null;
+                hale = null;
+            }
+
+            //Hvis den siste skal fjernes
+            else if(denne == null){
+                hale.forrige = denne.forrige;
+            }
+
+            //Hvis første node skal fjernes
+            else if(denne.forrige == hode){
+                hode = hode.neste;
+                hode.forrige = null;
+            }
+            //Hvis en node i inne i listen skal fjernes
+            else {
+                //Setter opp noen midlertidige noder
+                Node q = denne.forrige;
+                Node r = denne.neste;
+
+                q.neste = r;
+                r.forrige = q;
+
+                denne.forrige = null;
+                denne.neste = null;
+            }
         }
 
     } // class DobbeltLenketListeIterator
