@@ -34,6 +34,7 @@ public class DobbeltLenketListe<T> implements Liste<T> {
         private Node(T verdi) {
             this(verdi, null, null);
         }
+
     }
 
     // instansvariabler
@@ -75,6 +76,7 @@ public class DobbeltLenketListe<T> implements Liste<T> {
 
     }
     public Liste<T> subliste(int fra, int til){
+
         throw new NotImplementedException();
     }
 
@@ -104,8 +106,12 @@ public class DobbeltLenketListe<T> implements Liste<T> {
     }
 
     @Override
-    public boolean inneholder(T verdi) {
-        throw new NotImplementedException();
+    public boolean inneholder(T verdi){
+        if(indeksTil(verdi) != -1) {
+            return true;
+        }else{
+            return false;
+        }
     }
 
     @Override
@@ -114,8 +120,16 @@ public class DobbeltLenketListe<T> implements Liste<T> {
     }
 
     @Override
-    public int indeksTil(T verdi) {
-        throw new NotImplementedException();
+    public int indeksTil(T verdi){
+        if(verdi==null){ //returnerer -1 hvis verdien ikke finnes i lista
+            return -1;
+        }
+        for(int i = 0; i<antall; i++){
+            if(a[i].equals(verdi)) {
+                return i;
+            }
+        }
+        return -1;
     }
 
     @Override
