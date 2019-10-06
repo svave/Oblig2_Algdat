@@ -15,7 +15,6 @@ import java.util.Objects;
 import java.util.function.Predicate;
 
 
-
 public class DobbeltLenketListe<T> implements Liste<T> {
 
     /**
@@ -35,6 +34,7 @@ public class DobbeltLenketListe<T> implements Liste<T> {
         private Node(T verdi) {
             this(verdi, null, null);
         }
+
     }
 
     // instansvariabler
@@ -44,79 +44,61 @@ public class DobbeltLenketListe<T> implements Liste<T> {
     private int endringer;         // antall endringer i listen
 
     public DobbeltLenketListe() {
-        throw new NotImplementedException();
     }
 
-    //Oppgave 1
     public DobbeltLenketListe(T[] a) {
-        if(a == null){
-            throw new NullPointerException("Tabllen a er null");
-            //       Objects.requireNonNull(a, "Tabellen a er null");
-        }
+        this.hode = hode;
+        hode.forrige = null;
+        this.hale = hale;
+        hale.neste = null;
+        this.antall = antall;
+        this.endringer = endringer;
 
-        else if(a.length == 0){
-            hode = null;
-            hale = null;
-            endringer = 0;
-        } else {
+        //Sjekker om en verdi i a er null
+        for(T t : a) {
+            if (t == null) {
+                Objects.requireNonNull(a, "Ikke tillatt med null tabell");
+            }
 
-            for(int i =0; i<a.length && a[i] != null; i++){
-                Node<T> parent = hode = new Node<>(a[i]);
-               // Node<T> child = hale = new Node<>(a[i]);
-                antall = 1;
+            //hvis a har en verdi som ikke er null
+            if(a.length == 1 && a != null){
+                hode.forrige = new Node<>(a[0]);
+                hale.neste = new Node<>(a[0]);
+                antall++;
+            }
+            //hvis tabellen a er helt tom
+            if(a.length == 0){
+                this.hode = null;
+                this.hale = null;
                 endringer = 0;
-
-                for(i++; i<a.length; i++){
-                    if(a[i] != null){
-                        parent = parent.neste = new Node<>(a[i]);
-                 //       child = parent.neste = new Node<>(a[i+1]);
-                        //       q = p;
-                        antall++;
-                    }
-                }
-                hale = parent;
             }
         }
 
     }
+    public Liste<T> subliste(int fra, int til){
+
+        throw new NotImplementedException();
+    }
+
     @Override
     public int antall() {
-        return antall;
+        return 0;
     }
 
     @Override
     public boolean tom() {
-        return antall == 0;
-    } // slutt på oppgave 1
-
-    //Oppgave 2
-    @Override
-    public String toString() {
-        throw new NotImplementedException();
+        if(antall()==0){
+            return true;
+        }
+        else{
+            return false;
+        }
     }
-    public String omvendtString() {
-        throw new NotImplementedException();
-    }//Slutt på oppgave 2a
 
-    //Oppgave 2b
     @Override
     public boolean leggInn(T verdi) {
         throw new NotImplementedException();
-    }//Slutt på oppgave 2b
-
-    //oppgave 3
-    private Node<T> finnNode(int indeks){
-        throw new NotImplementedException();
     }
-    //Slutt på oppgave 3
-
-
-    public Liste<T> subliste(int fra, int til){
-        throw new NotImplementedException();
-    }
-
-
-
 
     @Override
     public void leggInn(int indeks, T verdi) {
@@ -124,8 +106,12 @@ public class DobbeltLenketListe<T> implements Liste<T> {
     }
 
     @Override
-    public boolean inneholder(T verdi) {
-        throw new NotImplementedException();
+    public boolean inneholder(T verdi){
+        if(indeksTil(verdi) != -1) {
+            return true;
+        }else{
+            return false;
+        }
     }
 
     @Override
@@ -134,8 +120,16 @@ public class DobbeltLenketListe<T> implements Liste<T> {
     }
 
     @Override
-    public int indeksTil(T verdi) {
-        throw new NotImplementedException();
+    public int indeksTil(T verdi){
+        if(verdi==null){ //returnerer -1 hvis verdien ikke finnes i lista
+            return -1;
+        }
+        for(int i = 0; i<antall; i++){
+            if(a[i].equals(verdi)) {
+                return i;
+            }
+        }
+        return -1;
     }
 
     @Override
@@ -158,12 +152,19 @@ public class DobbeltLenketListe<T> implements Liste<T> {
         throw new NotImplementedException();
     }
 
+    @Override
+    public String toString() {
+        throw new NotImplementedException();
+    }
 
-
+    public String omvendtString() {
+        throw new NotImplementedException();
+    }
 
     @Override
     public Iterator<T> iterator() {
-        throw new NotImplementedException();
+        //8 b)
+        return new DobbeltLenketListe<T>;
     }
 
     public Iterator<T> iterator(int indeks) {
@@ -176,27 +177,68 @@ public class DobbeltLenketListe<T> implements Liste<T> {
         private boolean fjernOK;
         private int iteratorendringer;
 
-        private DobbeltLenketListeIterator(){
-            throw new NotImplementedException();
+        private DobbeltLenketListeIterator(int indeks){
+            //8 c)
+
         }
 
-        private DobbeltLenketListeIterator(int indeks){
-            throw new NotImplementedException();
+        private DobbeltLenketListeIterator(){
+            denne = hode;     // p starter på den første i listen
+            fjernOK = false;  // blir sann når next() kalles
+            iteratorendringer = endringer;  // teller endringer
         }
 
         @Override
         public boolean hasNext(){
-            throw new NotImplementedException();
+            return denne != null;
         }
 
         @Override
         public T next(){
-            throw new NotImplementedException();
+            if(iteratorendringer != endringer){
+                throw new ConcurrentModificationException();
+            }
+            if(!hasNext()){
+                throw new NoSuchElementException("Ingen verdier i listen!");
+                fjernOK = true;
+                T thisValue = denne.verdi;
+                denne = denne.neste;
+
+                return thisValue;
+            }
         }
 
         @Override
         public void remove(){
-            throw new NotImplementedException();
+
+            //Hvis Nodens verdi er eneste som ligger i listen, så nulles hode og hale
+            if(antall == 1){
+                hode = null;
+                hale = null;
+            }
+
+            //Hvis den siste skal fjernes
+            else if(denne == null){
+                hale.forrige = denne.forrige;
+            }
+
+            //Hvis første node skal fjernes
+            else if(denne.forrige == hode){
+                hode = hode.neste;
+                hode.forrige = null;
+            }
+            //Hvis en node i inne i listen skal fjernes
+            else {
+                //Setter opp noen midlertidige noder
+                Node q = denne.forrige;
+                Node r = denne.neste;
+
+                q.neste = r;
+                r.forrige = q;
+
+                denne.forrige = null;
+                denne.neste = null;
+            }
         }
 
     } // class DobbeltLenketListeIterator
