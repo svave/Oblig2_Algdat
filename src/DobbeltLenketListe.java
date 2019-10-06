@@ -47,34 +47,50 @@ public class DobbeltLenketListe<T> implements Liste<T> {
     }
 
     public DobbeltLenketListe(T[] a) {
-        this.hode = hode;
-        hode.forrige = null;
-        this.hale = hale;
-        hale.neste = null;
-        this.antall = antall;
-        this.endringer = endringer;
+        Node<T> temp;
+
+        //hvis tabellen a er helt tom
+        if (a.length == 0) {
+            this.hode = null;
+            this.hale = null;
+            endringer = 0;
+        }
 
         //Sjekker om en verdi i a er null
-        for(T t : a) {
+        for (T t : a) {
             if (t == null) {
-                Objects.requireNonNull(a, "Ikke tillatt med null tabell");
+                Objects.requireNonNull(a, "Tabellen a er null");
             }
 
             //hvis a har en verdi som ikke er null
-            if(a.length == 1 && a != null){
-                hode.forrige = new Node<>(a[0]);
-                hale.neste = new Node<>(a[0]);
-                antall++;
-            }
-            //hvis tabellen a er helt tom
-            if(a.length == 0){
-                this.hode = null;
-                this.hale = null;
-                endringer = 0;
+            for (int i = 0; i < a.length && a[i] != null; i++) {
+                Node<T> p = new Node<>(a[i]);
+                antall = 1;
+                if (i == 0) {
+                    hode = p;
+                    p.forrige = hode;
+                    p.neste = hode;
+                } else {
+                    for (i++; i < a.length; i++) {
+                        if (a[i] != null) {
+                           // p = p.neste = new Node<>(a[i]);
+                            //Finner siste node
+                            temp = (hode).forrige;
+
+                            temp.neste = p;
+                            p.neste = hode;
+                            p.forrige = temp;
+                            temp = hode;
+                            temp.forrige = p;
+                            antall++;
+                        }
+                    }
+                }
             }
         }
-
     }
+
+
     public Liste<T> subliste(int fra, int til){
 
         throw new NotImplementedException();
@@ -82,17 +98,12 @@ public class DobbeltLenketListe<T> implements Liste<T> {
 
     @Override
     public int antall() {
-        return 0;
+        return antall;
     }
 
     @Override
     public boolean tom() {
-        if(antall()==0){
-            return true;
-        }
-        else{
-            return false;
-        }
+       return antall == 0;
     }
 
     @Override
@@ -119,9 +130,11 @@ public class DobbeltLenketListe<T> implements Liste<T> {
         throw new NotImplementedException();
     }
 
+
     @Override
-    public int indeksTil(T verdi){
-        if(verdi==null){ //returnerer -1 hvis verdien ikke finnes i lista
+    public int indeksTil(T verdi){ throw new NotImplementedException();
+
+        /*    if(verdi==null){ //returnerer -1 hvis verdien ikke finnes i lista
             return -1;
         }
         for(int i = 0; i<antall; i++){
@@ -129,7 +142,7 @@ public class DobbeltLenketListe<T> implements Liste<T> {
                 return i;
             }
         }
-        return -1;
+        return -1;*/
     }
 
     @Override
@@ -161,10 +174,12 @@ public class DobbeltLenketListe<T> implements Liste<T> {
         throw new NotImplementedException();
     }
 
+
     @Override
     public Iterator<T> iterator() {
         //8 b)
-        return new DobbeltLenketListe<T>;
+        throw new NotImplementedException();
+        //   return new DobbeltLenketListe<T>;
     }
 
     public Iterator<T> iterator(int indeks) {
@@ -195,7 +210,8 @@ public class DobbeltLenketListe<T> implements Liste<T> {
 
         @Override
         public T next(){
-            if(iteratorendringer != endringer){
+            throw new NotImplementedException();
+/*            if(iteratorendringer != endringer){
                 throw new ConcurrentModificationException();
             }
             if(!hasNext()){
@@ -205,7 +221,7 @@ public class DobbeltLenketListe<T> implements Liste<T> {
                 denne = denne.neste;
 
                 return thisValue;
-            }
+            }*/
         }
 
         @Override
