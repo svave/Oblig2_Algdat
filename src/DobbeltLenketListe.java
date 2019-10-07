@@ -124,8 +124,9 @@ public class DobbeltLenketListe<T> implements Liste<T> {
         if(verdi==null){ //returnerer -1 hvis verdien ikke finnes i lista
             return -1;
         }
+        Node<T> a = hode;
         for(int i = 0; i<antall; i++){
-            if(a[i].equals(verdi)) {
+            if(a.verdi.equals(verdi)) {
                 return i;
             }
         }
