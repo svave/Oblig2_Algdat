@@ -44,16 +44,19 @@ public class DobbeltLenketListe<T> implements Liste<T> {
     private int endringer;         // antall endringer i listen
 
     public DobbeltLenketListe() {
+        hode = hale = null;
+        antall = 0;
+        endringer = 0;
     }
 
     public DobbeltLenketListe(T[] a) {
-        Node<T> temp;
 
         //hvis tabellen a er helt tom
         if (a.length == 0) {
             this.hode = null;
             this.hale = null;
             endringer = 0;
+            antall =0;
         }
 
         //Sjekker om en verdi i a er null
@@ -61,33 +64,25 @@ public class DobbeltLenketListe<T> implements Liste<T> {
             if (t == null) {
                 Objects.requireNonNull(a, "Tabellen a er null");
             }
+        }
 
-            //hvis a har en verdi som ikke er null
-            for (int i = 0; i < a.length && a[i] != null; i++) {
-                Node<T> p = new Node<>(a[i]);
-                antall = 1;
-                if (i == 0) {
-                    hode = p;
-                    p.forrige = hode;
-                    p.neste = hode;
-                } else {
-                    for (i++; i < a.length; i++) {
-                        if (a[i] != null) {
-                           // p = p.neste = new Node<>(a[i]);
-                            //Finner siste node
-                            temp = (hode).forrige;
-
-                            temp.neste = p;
-                            p.neste = hode;
-                            p.forrige = temp;
-                            temp = hode;
-                            temp.forrige = p;
-                            antall++;
-                        }
-                    }
+        for(int i =0; i<a.length; i++){
+            if(a[i] != null){
+                hode = new Node<>(a[i]);
+                break;
+            }
+        }
+        hale = hode;
+        if(hode != null){
+            for(int k = 0; k<a.length; k++){
+                if(a[k] != null){
+                    hale.neste = new Node<>(a[k],hale,null);
+                    hale = hale.neste;
+                    antall++;
                 }
             }
         }
+
     }
 
 
