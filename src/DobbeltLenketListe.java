@@ -118,7 +118,7 @@ public class DobbeltLenketListe<T> implements Liste<T> {
 
     @Override
     public void leggInn(int indeks, T verdi) {
-        Objects.requireNonNull(verdi,"Null ikke lov!");
+     /*   Objects.requireNonNull(verdi,"Null ikke lov!");
 
         // først indekssjekk manuelt kan gjøres ved bruk av indekskontroll også
         if(indeks<0){//negative indexer ikke lov
@@ -142,7 +142,8 @@ public class DobbeltLenketListe<T> implements Liste<T> {
             nynode.forrige = nynode.forrige.neste = new Node<>(verdi,nynode.forrige,nynode);
         }
         antall++;
-        endringer++;
+        endringer++;*/
+     throw new NotImplementedException();
     }
 
     @Override
@@ -218,7 +219,24 @@ public class DobbeltLenketListe<T> implements Liste<T> {
     }
 
     public String omvendtString() {
-        throw new NotImplementedException();
+        StringBuilder sb = new StringBuilder();
+        sb.append('[');
+
+        Node<T> peker = hale;
+
+        if(peker != null){
+            sb.append(peker.verdi);
+            peker = peker.forrige;
+        }
+
+        while(peker != null){
+            sb.append(',');
+            sb.append(' ');
+            sb.append(peker.verdi);
+            peker = peker.forrige;
+        }
+        sb.append(']');
+        return sb.toString();
     }
 
 
