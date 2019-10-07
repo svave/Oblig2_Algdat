@@ -43,6 +43,25 @@ public class DobbeltLenketListe<T> implements Liste<T> {
     private int antall;            // antall noder i listen
     private int endringer;         // antall endringer i listen
 
+    private Node<T> finnNode(int indeks){
+        Node<T> pos;
+        if(indeks < (antall/2)){
+            pos = hode;
+            for(int i =0;i<indeks; i++){
+                pos = pos.neste;
+            }
+            return pos;
+        }else{
+            pos = hale;
+            for(int i = antall-1; i > indeks; i--){
+                pos = pos.forrige;
+            }
+            return pos;
+        }
+    }
+
+
+
     public DobbeltLenketListe() {
         hode = hale = null;
         antall = 0;
@@ -158,6 +177,7 @@ public class DobbeltLenketListe<T> implements Liste<T> {
     @Override
     public T hent(int indeks) {
         throw new NotImplementedException();
+        
     }
 
 
