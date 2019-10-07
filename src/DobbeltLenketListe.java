@@ -103,12 +103,46 @@ public class DobbeltLenketListe<T> implements Liste<T> {
 
     @Override
     public boolean leggInn(T verdi) {
-        throw new NotImplementedException();
+        Objects.requireNonNull(verdi,"null verdier er ikke tillat");
+        if(tom()){
+            hode = hale = new Node<>(verdi,null,null);
+        }
+        else{
+            hale = hale.neste = new Node<>(verdi,hale,null);
+        }
+        antall++;
+        endringer++;
+
+        return true;
     }
 
     @Override
     public void leggInn(int indeks, T verdi) {
-        throw new NotImplementedException();
+        Objects.requireNonNull(verdi,"Null ikke lov!");
+
+        // først indekssjekk manuelt kan gjøres ved bruk av indekskontroll også
+        if(indeks<0){//negative indexer ikke lov
+            throw new IndexOutOfBoundsException("index"+indeks+" er negativ");
+        }
+        else if(indeks>antall){//index større enn antall heller ikke lov
+            throw new IndexOutOfBoundsException("index "+indeks+"er > antall "+antall);
+        }
+
+
+        else if(tom()){//sjekke tomliste ved bruk av metoden tom
+            hode = hale = new Node<>(verdi,null,null);
+        }
+        else if(indeks==0){ // en ny verdi forrest i lista
+            hode = hode.forrige = new Node<>(verdi,null,hode);
+        }
+        else if(indeks==antall){// en ny verdi bakerst i lista
+            hale = hale.neste = new Node<>(verdi,hale,null);
+        }else{
+            Node<T> nynode = finnNode(indeks);
+            nynode.forrige = nynode.forrige.neste = new Node<>(verdi,nynode.forrige,nynode);
+        }
+        antall++;
+        endringer++;
     }
 
     @Override
@@ -127,18 +161,18 @@ public class DobbeltLenketListe<T> implements Liste<T> {
 
 
     @Override
-    public int indeksTil(T verdi){ throw new NotImplementedException();
-
-        /*    if(verdi==null){ //returnerer -1 hvis verdien ikke finnes i lista
+    public int indeksTil(T verdi){
+        if(verdi==null){ //returnerer -1 hvis verdien ikke finnes i lista
             return -1;
         }
+
         Node<T> a = hode;
         for(int i = 0; i<antall; i++){
             if(a.verdi.equals(verdi)) {
                 return i;
             }
         }
-        return -1;*/
+        return -1;
     }
 
     @Override
