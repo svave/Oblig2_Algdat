@@ -218,7 +218,7 @@ public class DobbeltLenketListe<T> implements Liste<T> {
             Node<T> tempNode2 = null;
 
             //Måte 1
-            /*
+
             while(tempNode1 != null){
                 tempNode2 = tempNode1.neste;
                 tempNode1.neste = null;
@@ -229,11 +229,13 @@ public class DobbeltLenketListe<T> implements Liste<T> {
             antall = 0;
             endringer++;
 
-         */
+         /*
         //Måte 2
         while(tempNode1.neste != null){
             fjern(0);
         }
+
+          */
     }
 
     @Override
@@ -317,14 +319,13 @@ public class DobbeltLenketListe<T> implements Liste<T> {
         public T next() {
             if (iteratorendringer != endringer) {
                 throw new ConcurrentModificationException();
-            } else if (!hasNext()) {
+            } else if (hasNext()) {
                 throw new NoSuchElementException("Ingen verdier i listen!");
-                fjernOK = true;
-                T thisValue = denne.verdi;
-                denne = denne.neste;
-
-                return thisValue;
             }
+            fjernOK = true;
+            T thisValue = denne.verdi;
+            denne = denne.neste;
+            return thisValue;
         } // class DobbeltLenketListeIterator
         @Override
         public void remove(){
@@ -362,13 +363,11 @@ public class DobbeltLenketListe<T> implements Liste<T> {
                 iteratorendringer--;
             }
         }
-        /*
-        public static <T> void sorter(Liste<T> liste, Comparator<? super T> c) {
-            throw new NotImplementedException();
-        }
-
-         */
     }
-} // class DobbeltLenketListe
+    public static <T> void sorter(Liste<T> liste, Comparator<? super T> c) {
+        throw new NotImplementedException();
+    }
+}
+ // class DobbeltLenketListe
 
 
