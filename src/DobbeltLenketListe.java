@@ -241,7 +241,29 @@ public class DobbeltLenketListe<T> implements Liste<T> {
 
     @Override
     public void nullstill() {
-        throw new NotImplementedException();
+        //Oppgave 7
+            Node<T> tempNode1 = hode;
+            Node<T> tempNode2 = null;
+
+            //Måte 1
+
+            while(tempNode1 != null){
+                tempNode2 = tempNode1.neste;
+                tempNode1.neste = null;
+                tempNode1.verdi = null;
+                tempNode1 = tempNode2;
+            }
+            hode = hale = null;
+            antall = 0;
+            endringer++;
+
+         /*
+        //Måte 2
+        while(tempNode1.neste != null){
+            fjern(0);
+        }
+
+          */
     }
 
     @Override
@@ -299,60 +321,56 @@ public class DobbeltLenketListe<T> implements Liste<T> {
         throw new NotImplementedException();
     }
 
-    private class DobbeltLenketListeIterator implements Iterator<T>
-    {
+    private class DobbeltLenketListeIterator implements Iterator<T> {
         private Node<T> denne;
         private boolean fjernOK;
         private int iteratorendringer;
 
-        private DobbeltLenketListeIterator(int indeks){
+        private DobbeltLenketListeIterator(int indeks) {
             //8 c)
+
 
         }
 
-        private DobbeltLenketListeIterator(){
+        private DobbeltLenketListeIterator() {
             denne = hode;     // p starter på den første i listen
             fjernOK = false;  // blir sann når next() kalles
             iteratorendringer = endringer;  // teller endringer
         }
 
         @Override
-        public boolean hasNext(){
+        public boolean hasNext() {
             return denne != null;
         }
 
         @Override
-        public T next(){
-            throw new NotImplementedException();
-/*            if(iteratorendringer != endringer){
+        public T next() {
+            if (iteratorendringer != endringer) {
                 throw new ConcurrentModificationException();
-            }
-            if(!hasNext()){
+            } else if (hasNext()) {
                 throw new NoSuchElementException("Ingen verdier i listen!");
-                fjernOK = true;
-                T thisValue = denne.verdi;
-                denne = denne.neste;
-
-                return thisValue;
-            }*/
-        }
-
+            }
+            fjernOK = true;
+            T thisValue = denne.verdi;
+            denne = denne.neste;
+            return thisValue;
+        } // class DobbeltLenketListeIterator
         @Override
         public void remove(){
 
             //Hvis Nodens verdi er eneste som ligger i listen, så nulles hode og hale
-            if(antall == 1){
+            if (antall == 1) {
                 hode = null;
                 hale = null;
             }
 
             //Hvis den siste skal fjernes
-            else if(denne == null){
+            else if (denne == null) {
                 hale.forrige = denne.forrige;
             }
 
             //Hvis første node skal fjernes
-            else if(denne.forrige == hode){
+            else if (denne.forrige == hode) {
                 hode = hode.neste;
                 hode.forrige = null;
             }
@@ -367,15 +385,17 @@ public class DobbeltLenketListe<T> implements Liste<T> {
 
                 denne.forrige = null;
                 denne.neste = null;
+
+                antall++;
+                endringer--;
+                iteratorendringer--;
             }
         }
-
-    } // class DobbeltLenketListeIterator
-
+    }
     public static <T> void sorter(Liste<T> liste, Comparator<? super T> c) {
         throw new NotImplementedException();
     }
-
-} // class DobbeltLenketListe
+}
+ // class DobbeltLenketListe
 
 
