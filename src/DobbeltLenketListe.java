@@ -175,8 +175,8 @@ public class DobbeltLenketListe<T> implements Liste<T> {
 
     @Override
     public T hent(int indeks) {
-        throw new NotImplementedException();
-        
+        indeksKontroll(indeks,false);
+        return finnNode(indeks).verdi;
     }
 
 
@@ -197,7 +197,16 @@ public class DobbeltLenketListe<T> implements Liste<T> {
 
     @Override
     public T oppdater(int indeks, T nyverdi) {
-        throw new NotImplementedException();
+        indeksKontroll(indeks, false);
+        if(nyverdi == null){
+            throw new NullPointerException("Nyverdi kan ikke være null");
+        }
+            Node<T> pos = finnNode(indeks);
+            T gammelverdi = pos.verdi;
+
+            pos.verdi = nyverdi;
+            endringer++;
+        return gammelverdi;
     }
 
     @Override
