@@ -5,13 +5,8 @@
 
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
-import java.util.Comparator;
-import java.util.ConcurrentModificationException;
-import java.util.NoSuchElementException;
-import java.util.StringJoiner;
+import java.util.*;
 
-import java.util.Iterator;
-import java.util.Objects;
 import java.util.function.Predicate;
 
 
@@ -68,7 +63,7 @@ public class DobbeltLenketListe<T> implements Liste<T> {
 
         if (til > antall)                          // til er utenfor tabellen
             throw new IndexOutOfBoundsException
-                    ("til(" + til + ") > tablengde(" + antall + ")");
+                    ("til(" + til + ") > antall(" + antall + ")");
 
         if (fra > til)                                // fra er større enn til
             throw new IllegalArgumentException
@@ -112,7 +107,16 @@ public class DobbeltLenketListe<T> implements Liste<T> {
     public Liste<T> subliste(int fra, int til){
         fratilKontroll(antall,fra,til);
         Liste<T> innhold = new DobbeltLenketListe<>();
-        
+        Node<T> posisjon = finnNode(fra);
+        int antall = til-fra;
+        if(antall < 1){
+            return new DobbeltLenketListe<>();
+        }
+        while(antall > 0){
+            innhold.leggInn(posisjon.verdi);
+            posisjon = posisjon.neste;
+            antall--;
+        }
         return innhold;
     }
 
@@ -444,7 +448,21 @@ public class DobbeltLenketListe<T> implements Liste<T> {
         }
         }
     public static <T> void sorter(Liste<T> liste, Comparator<? super T> c) {
-        throw new NotImplementedException();
+        int lengde = liste.antall();
+        //Hint: bruk iterator
+        //comparator og iterator skal kunne endre listen
+        //bruk to for løkker en for å løpe gjennom andre for å endre i listen
+      //  for(Iterator i = liste.iterator(); i.hasNext();){
+        //    System.out.println(i.hasNext());
+        //}
+        for(int i =0; i<lengde;i++){
+            for(int j = 0; j<lengde; j++){
+                if((c.compare(liste.hent(i),liste.hent(j))< 0)){
+
+                }
+            }
+        }
+
     }
 }
  // class DobbeltLenketListe
