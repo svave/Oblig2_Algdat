@@ -382,55 +382,54 @@ public class DobbeltLenketListe<T> implements Liste<T> {
 
         @Override
         public T next() {
-            if (iteratorendringer != endringer) {
-                throw new ConcurrentModificationException();
-            } else if (!hasNext()) {
+            if (!hasNext()) {
                 throw new NoSuchElementException("Ingen verdier i listen!");
+            } else if (iteratorendringer != endringer) {
+                throw new ConcurrentModificationException();
             }
             fjernOK = true;
             T thisValue = denne.verdi;
             denne = denne.neste;
+
             return thisValue;
         }
 
         // class DobbeltLenketListeIterator
         @Override
-        public void remove(){
+        public void remove() {
+            if (!fjernOK) {
+                throw new IllegalStateException("FEIL!");
+            }
+            if (endringer != iteratorendringer) {
+                throw new ConcurrentModificationException();
+            }
 
-            //Hvis Nodens verdi er eneste som ligger i listen, så nulles hode og hale
+            fjernOK = false;
+            Node<T> temp = hode;
+
+            //Hvis den eneste noden skal fjernes
             if (antall == 1) {
                 hode = null;
                 hale = null;
             }
-
-            //Hvis den siste skal fjernes
+            //hvis siste node skal fjernes
             else if (denne == null) {
-                hale.forrige = denne.forrige;
-            }
-
-            //Hvis første node skal fjernes
-            else if (denne.forrige == hode) {
+                temp = hale;
+                hale = hale.forrige;
+                hale.neste = null;
+            } else if (denne.forrige == hode) {
                 hode = hode.neste;
                 hode.forrige = null;
+            } else {
+                temp = denne.forrige;
+                temp.forrige.neste = temp.neste;
+                temp.neste.forrige = temp.forrige;
             }
-            //Hvis en node i inne i listen skal fjernes
-            else {
-                //Setter opp noen midlertidige noder
-                Node q = denne.forrige;
-                Node r = denne.neste;
-
-                q.neste = r;
-                r.forrige = q;
-
-                denne.forrige = null;
-                denne.neste = null;
-
-                antall++;
-                endringer--;
-                iteratorendringer--;
-            }
+            antall--;
+            endringer++;
+            iteratorendringer++;
         }
-    }
+        }
     public static <T> void sorter(Liste<T> liste, Comparator<? super T> c) {
         throw new NotImplementedException();
     }
