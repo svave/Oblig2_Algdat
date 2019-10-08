@@ -59,6 +59,21 @@ public class DobbeltLenketListe<T> implements Liste<T> {
             return pos;
         }
     }
+    //Hjelpemetode til oppgave 3
+    private static void fratilKontroll(int antall, int fra, int til)
+    {
+        if (fra < 0)                                  // fra er negativ
+            throw new IndexOutOfBoundsException
+                    ("fra(" + fra + ") er negativ!");
+
+        if (til > antall)                          // til er utenfor tabellen
+            throw new IndexOutOfBoundsException
+                    ("til(" + til + ") > tablengde(" + antall + ")");
+
+        if (fra > til)                                // fra er større enn til
+            throw new IllegalArgumentException
+                    ("fra(" + fra + ") > til(" + til + ") - illegalt intervall!");
+    }
 
 
 
@@ -72,42 +87,33 @@ public class DobbeltLenketListe<T> implements Liste<T> {
 
         //hvis tabellen a er helt tom
         if (a.length == 0) {
-            this.hode = null;
-            this.hale = null;
+            Objects.requireNonNull(a, "Tabellen a er null");
+            hode = null;
+            hale = null;
             endringer = 0;
             antall =0;
         }
 
-        //Sjekker om en verdi i a er null
-        for (T t : a) {
-            if (t == null) {
-                Objects.requireNonNull(a, "Tabellen a er null");
-            }
-        }
-
-        for(int i =0; i<a.length; i++){
-            if(a[i] != null){
-                hode = new Node<>(a[i]);
-                break;
-            }
-        }
-        hale = hode;
-        if(hode != null){
-            for(int k = 0; k<a.length; k++){
-                if(a[k] != null){
-                    hale.neste = new Node<>(a[k],hale,null);
+        for(int i =0; i<a.length; i++) {
+            if (a[i] != null) {
+                if (hode == null) {
+                    hode = hale = new Node<>(a[i]);
+                    antall++;
+                } else {
+                    hale.neste = new Node<>(a[i], hale, null);
                     hale = hale.neste;
                     antall++;
                 }
             }
         }
-
     }
 
 
     public Liste<T> subliste(int fra, int til){
-
-        throw new NotImplementedException();
+        fratilKontroll(antall,fra,til);
+        Liste<T> innhold = new DobbeltLenketListe<>();
+        
+        return innhold;
     }
 
     @Override
@@ -197,15 +203,15 @@ public class DobbeltLenketListe<T> implements Liste<T> {
 
     @Override
     public T oppdater(int indeks, T nyverdi) {
+        Objects.requireNonNull(nyverdi,"Nyverdi kan ikke være null");
         indeksKontroll(indeks, false);
-        if(nyverdi == null){
-            throw new NullPointerException("Nyverdi kan ikke være null");
-        }
-            Node<T> pos = finnNode(indeks);
-            T gammelverdi = pos.verdi;
 
-            pos.verdi = nyverdi;
-            endringer++;
+        Node<T> pos = finnNode(indeks);
+        T gammelverdi = pos.verdi;
+
+        pos.verdi = nyverdi;
+        endringer++;
+
         return gammelverdi;
     }
 
@@ -222,13 +228,19 @@ public class DobbeltLenketListe<T> implements Liste<T> {
             temp2 = temp1;
             temp1 = temp1.neste;
         }
-        if(temp1 == null){
-            return  false;
-        } else if (temp1 == hode){
+        if(antall==1){
+            hode = null;
+            hale = null;
+        }
+
+        else if (temp1 == hode) {
             hode = hode.neste;
+        }else if(temp1== hale){
+            hale = hale.forrige;
         } else {
             temp2.neste = temp1.neste;
         }
+
         if(temp1 == hale){
             hale = temp2;
         }
@@ -319,6 +331,7 @@ public class DobbeltLenketListe<T> implements Liste<T> {
             sb.append(peker.verdi);
             peker = peker.neste;
         }
+
         sb.append(']');
         return sb.toString();
     }
