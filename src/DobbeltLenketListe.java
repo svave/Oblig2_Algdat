@@ -222,13 +222,19 @@ public class DobbeltLenketListe<T> implements Liste<T> {
             temp2 = temp1;
             temp1 = temp1.neste;
         }
-        if(temp1 == null){
-            return  false;
-        } else if (temp1 == hode){
+        if(antall==1){
+            hode = null;
+            hale = null;
+        }
+
+        else if (temp1 == hode) {
             hode = hode.neste;
+        }else if(temp1== hale){
+            hale = hale.forrige;
         } else {
             temp2.neste = temp1.neste;
         }
+
         if(temp1 == hale){
             hale = temp2;
         }
