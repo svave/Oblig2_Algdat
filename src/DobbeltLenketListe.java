@@ -296,7 +296,7 @@ public class DobbeltLenketListe<T> implements Liste<T> {
         indeksKontroll(indeks, false);
         Node<T> temp = hode;
         T verdi;
-        
+
         if(antall == 1){
             hode = null;
             hale = null;
@@ -449,7 +449,7 @@ public class DobbeltLenketListe<T> implements Liste<T> {
         private DobbeltLenketListeIterator(int indeks) {
             //8c
             denne = finnNode(indeks);
-            denne = hode;     // p starter på den første i listen
+            //denne = hode;     // p starter på den første i listen
             fjernOK = false;  // blir sann når next() kalles
             iteratorendringer = endringer;  // teller endringer
         }
