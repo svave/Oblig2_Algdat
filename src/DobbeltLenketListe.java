@@ -221,6 +221,40 @@ public class DobbeltLenketListe<T> implements Liste<T> {
 
     @Override
     public boolean fjern(T verdi) {
+
+        if(verdi == null){
+            return false;
+        }
+
+        Node<T> temp = hode;
+        while(temp != null){
+            //leter etter verdien
+            if(temp.verdi.equals(verdi)) break;
+            temp = temp.neste;
+        }
+        if(temp == null){
+            return false;
+        } else if (antall == 1){
+            hode = null;
+            hale = null;
+        } else if(temp == hode){
+            hode = hode.neste;
+            hode.forrige = null;
+        } else if(temp == hale){
+            hale = hale.forrige;
+            hale.neste = null;
+        } else {
+            temp.forrige.neste = temp.neste;
+            temp.neste.forrige = temp.forrige;
+        }
+        temp.verdi = null;
+        temp.forrige = null;
+        temp.neste = null;
+        antall--;
+        endringer++;
+        return true;
+        /*
+        //koden under gir NullPointerException
         if(verdi == null){
             return false;
         }
@@ -254,23 +288,56 @@ public class DobbeltLenketListe<T> implements Liste<T> {
         antall--;
         endringer++;
         return true;
+        */
     }
 
     @Override
     public T fjern(int indeks) {
         indeksKontroll(indeks, false);
+        Node<T> temp = hode;
+        T verdi;
+        
+        if(antall == 1){
+            hode = null;
+            hale = null;
+        } else if (indeks == 0){
+            hode = hode.neste;
+            hode.forrige = null;
+        } else if(indeks == antall- 1){
+            temp = hale;
+            hale = hale.forrige;
+            hale.neste = null;
+        } else {
+            temp = finnNode(indeks);
+            temp.forrige.neste = temp.neste;
+            temp.neste.forrige = temp.forrige;
+        }
+        verdi = temp.verdi;
+        temp.verdi = null;
+        temp.forrige = null;
+        temp.neste = null;
+        antall--;
+        endringer++;
+        return verdi;
+
+        //er noe feil her som gir oppgave 7 feil
+        /*
+        indeksKontroll(indeks, false);
         Node<T> nynode = hode;
         T temp;
 
         //kun en node
-        if(antall==1){
-            hode = hale = null;
-        }
 
         if(indeks == 0){// den første verdien fjernes
+            temp = hode.verdi;
             hode = hode.neste;
-            hode.forrige = null;
+           //hode.forrige = null;
+
+            if(antall==1){
+                hode = hale = null;
+            }
         }
+
         else if(indeks == antall - 1){ //den siste verdien fjernes
             nynode = hale;
             hale = hale.forrige;
@@ -288,11 +355,14 @@ public class DobbeltLenketListe<T> implements Liste<T> {
         antall--; // reduserer i node
         endringer++; //øker endringer
         return temp;
+
+         */
     }
 
     @Override
     public void nullstill() {
         //Oppgave 7
+/*
             Node<T> tempNode1 = hode;
             Node<T> tempNode2 = null;
 
@@ -307,14 +377,12 @@ public class DobbeltLenketListe<T> implements Liste<T> {
             hode = hale = null;
             antall = 0;
             endringer++;
+*/
 
-         /*
         //Måte 2
-        while(tempNode1.neste != null){
+        while(antall > 0){
             fjern(0);
         }
-
-          */
     }
 
     @Override
