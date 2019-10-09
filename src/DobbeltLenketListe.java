@@ -1,4 +1,12 @@
+// Følgende studenter jobbet sammen
+/*
+Svavar Skuli Einarsson, s333737, s333737@oslomet.no
 
+Dion Dehari, s333723, s333723@oslomet.no.
+
+Ole Alexander Jensen Elg, s326174, s326174@oslomet.no
+
+*/
 
 ////////////////// class DobbeltLenketListe //////////////////////////////
 
@@ -38,6 +46,7 @@ public class DobbeltLenketListe<T> implements Liste<T> {
     private int antall;            // antall noder i listen
     private int endringer;         // antall endringer i listen
 
+
     private Node<T> finnNode(int indeks){
         Node<T> pos;
         if(indeks < (antall/2)){
@@ -54,6 +63,8 @@ public class DobbeltLenketListe<T> implements Liste<T> {
             return pos;
         }
     }
+
+
     //Hjelpemetode til oppgave 3
     private static void fratilKontroll(int antall, int fra, int til)
     {
@@ -120,6 +131,7 @@ public class DobbeltLenketListe<T> implements Liste<T> {
         return innhold;
     }
 
+
     @Override
     public int antall() {
         return antall;
@@ -127,8 +139,9 @@ public class DobbeltLenketListe<T> implements Liste<T> {
 
     @Override
     public boolean tom() {
-       return antall == 0;
+        return antall == 0;
     }
+
 
     @Override
     public boolean leggInn(T verdi) {
@@ -253,42 +266,7 @@ public class DobbeltLenketListe<T> implements Liste<T> {
         antall--;
         endringer++;
         return true;
-        /*
-        //koden under gir NullPointerException
-        if(verdi == null){
-            return false;
-        }
-        Node<T> temp1 = hode;
-        Node<T> temp2 = null;
 
-        while(temp1 != null){
-            if(temp1.verdi.equals(verdi)) break;
-            temp2 = temp1;
-            temp1 = temp1.neste;
-        }
-        if(antall==1){
-            hode = null;
-            hale = null;
-        }
-
-        else if (temp1 == hode) {
-            hode = hode.neste;
-        }else if(temp1== hale){
-            hale = hale.forrige;
-        } else {
-            temp2.neste = temp1.neste;
-        }
-
-        if(temp1 == hale){
-            hale = temp2;
-        }
-
-        temp1.verdi = null;
-        temp1.neste = null;
-        antall--;
-        endringer++;
-        return true;
-        */
     }
 
     @Override
@@ -320,69 +298,22 @@ public class DobbeltLenketListe<T> implements Liste<T> {
         endringer++;
         return verdi;
 
-        //er noe feil her som gir oppgave 7 feil
-        /*
-        indeksKontroll(indeks, false);
-        Node<T> nynode = hode;
-        T temp;
-
-        //kun en node
-
-        if(indeks == 0){// den første verdien fjernes
-            temp = hode.verdi;
-            hode = hode.neste;
-           //hode.forrige = null;
-
-            if(antall==1){
-                hode = hale = null;
-            }
-        }
-
-        else if(indeks == antall - 1){ //den siste verdien fjernes
-            nynode = hale;
-            hale = hale.forrige;
-            hale.neste = null;
-
-        }else{
-            nynode = finnNode(indeks);// bruker hjelpemetode
-            nynode.forrige.neste = nynode.neste;
-            nynode.neste.forrige = nynode.forrige;
-        }
-        temp = nynode.verdi;
-        nynode.verdi = null;
-        nynode.forrige = nynode.neste = null;
-
-        antall--; // reduserer i node
-        endringer++; //øker endringer
-        return temp;
-
-         */
     }
 
     @Override
     public void nullstill() {
         //Oppgave 7
-/*
-            Node<T> tempNode1 = hode;
-            Node<T> tempNode2 = null;
+        //Måte 1 litt raskere
 
-            //Måte 1
-
-            while(tempNode1 != null){
-                tempNode2 = tempNode1.neste;
-                tempNode1.neste = null;
-                tempNode1.verdi = null;
-                tempNode1 = tempNode2;
-            }
             hode = hale = null;
             antall = 0;
             endringer++;
-*/
+        /*
 
         //Måte 2
-        while(antall > 0){
+        while(antall > 0){ // litt tregere
             fjern(0);
-        }
+        }*/
     }
 
     @Override
@@ -408,6 +339,7 @@ public class DobbeltLenketListe<T> implements Liste<T> {
         return sb.toString();
     }
 
+
     public String omvendtString() {
         StringBuilder sb = new StringBuilder();
         sb.append('[');
@@ -430,26 +362,29 @@ public class DobbeltLenketListe<T> implements Liste<T> {
     }
 
 
+
     @Override
     public Iterator<T> iterator() {
         //8 b)
         return new DobbeltLenketListeIterator();
     }
 
+
     public Iterator<T> iterator(int indeks) {
         indeksKontroll(indeks, false);
         return new DobbeltLenketListeIterator(indeks);
     }
+
 
     private class DobbeltLenketListeIterator implements Iterator<T> {
         private Node<T> denne;
         private boolean fjernOK;
         private int iteratorendringer;
 
+
         private DobbeltLenketListeIterator(int indeks) {
             //8c
             denne = finnNode(indeks);
-            //denne = hode;     // p starter på den første i listen
             fjernOK = false;  // blir sann når next() kalles
             iteratorendringer = endringer;  // teller endringer
         }
@@ -460,10 +395,12 @@ public class DobbeltLenketListe<T> implements Liste<T> {
             iteratorendringer = endringer;  // teller endringer
         }
 
+
         @Override
         public boolean hasNext() {
             return denne != null;
         }
+
 
         @Override
         public T next() {
@@ -478,6 +415,7 @@ public class DobbeltLenketListe<T> implements Liste<T> {
 
             return thisValue;
         }
+
 
         // class DobbeltLenketListeIterator
         @Override
@@ -515,23 +453,25 @@ public class DobbeltLenketListe<T> implements Liste<T> {
             iteratorendringer++;
         }
         }
+
+
+        // brukt quicksort på oppgave 10
     public static <T> void sorter(Liste<T> liste, Comparator<? super T> c) {
         int lengde = liste.antall();
-        //Hint: bruk iterator
-        //comparator og iterator skal kunne endre listen
-        //bruk to for løkker en for å løpe gjennom andre for å endre i listen
-      //  for(Iterator i = liste.iterator(); i.hasNext();){
-        //    System.out.println(i.hasNext());
-        //}
         for(int i =0; i<lengde;i++){
             for(int j = 0; j<lengde; j++){
                 if((c.compare(liste.hent(i),liste.hent(j))< 0)){
+                            T fra = liste.hent(i);
+                            T til = liste.hent(j);
+                            liste.oppdater(i, til);
+                            liste.oppdater(j, fra);
 
                 }
             }
         }
 
     }
+
 }
  // class DobbeltLenketListe
 
